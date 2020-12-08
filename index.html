@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!--
+the page and integration is original work, the interactions are based on these:
+- https://www.masswerk.at/elizabot/
+- https://github.com/brandongmwong/elizabot-js
+-->
+
+<script src="eliza.js"></script>
+
+<style>
+
+body {
+    font-family: sans-serif;
+    padding: 4px;
+}
+
+.rounded {
+    font-size: 16px;
+    border: 2px solid gray;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.conversation {
+    height: 1.1em;
+}
+
+.activity {
+    display: flex;
+    align-items: center;
+}
+
+.bubble {
+    display: inline-block;
+    width: 0.25em;
+    height: 0.25em;
+    margin-left: 0.125em;
+    margin-right: 0.125em;
+    background-color: gray;
+    border-radius: 50%;
+    animation: ripple 1.5s linear infinite;
+
+}
+
+.bubble:nth-child(1) {
+    animation-delay: .25s
+}
+
+.bubble:nth-child(2) {
+    animation-delay: .50s
+}
+
+.bubble:nth-child(3) {
+    animation-delay: .75s
+}
+
+@keyframes ripple {
+	0%, 25%, 50%, 100% {
+		transform: initial;
+	}
+	12.5% {
+		transform: translateY(-0.125em);
+	}
+	37.5% {
+		transform: translateY(0.125em);
+	}
+}
+
+</style>
+</head>
+
+<body>
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 50%;">
+      <div id="output" class="rounded" style="width: 100%; height: 14em; overflow-y: scroll;"></div>
+      <input id="input" class="rounded" style="width: 100%;" type="text">
+    </div>
+  </div>
+</body>
+
+<script>
+window.onload = function () {
+    function space () {
+        let output = document.getElementById ("output");
+
+        let item = document.createElement ("div");
+        item.appendChild (document.createTextNode (""));
+        item.classList.add ("conversation");
+        output.appendChild (item);
+
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function append (id, text) {
+        let output = document.getElementById ("output");
+
+        let item = document.createElement ("div");
+        item.appendChild (document.createTextNode (id + ": " + text));
+        item.classList.add ("conversation");
+        output.appendChild (item);
+
+        output.scrollTop = output.scrollHeight;
+    }
+
+    function bubble () {
+        let output = document.getElementById ("output");
+
+        let item = document.createElement ("div");
+        item.setAttribute ("id", "activity");
+        item.classList.add ("activity");
+
+        for (let loop = 0; loop < 3; loop++) {
+            let dot = document.createElement ("div");
+            dot.classList.add ("bubble");
+            item.appendChild (dot);
+        }
+
+        item.classList.add ("conversation");
+        output.appendChild (item);
+
+        output.scrollTop = output.scrollHeight;
+    }
+
+    let name = 'Clippy';
+    var bot = new ElizaBot (false);
+    var inactivity = null;
+
+    document.getElementById ("input").addEventListener ("change", function (e) {
+        var text = e.target.value;
+        append ("You", text);
+
+        if (inactivity) {
+            clearTimeout (inactivity);
+            inactivity = null;
+        }
+
+        inactivity = setTimeout (function () {
+            append (name, bot.transform ("Goodbye."));
+            space ();
+        }, 30 * 1000);
+
+        var bubbles = setTimeout (function () {
+            bubble ();
+        }, (0 + 5 * Math.random ()) * 1000);
+
+        setTimeout (function () {
+            try {
+                clearTimeout (bubbles);
+                document.getElementById ("activity").remove ();
+            }
+            catch (e) {
+            }
+
+            append (name, bot.transform (text));
+            if (bot.quit) {
+                space ();
+            }
+        }, (1 + 5 * Math.random ()) * 1000);
+
+        document.getElementById ("input").value = "";
+    });
+}
+</script>
+</html>
