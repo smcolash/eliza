@@ -1,2 +1,2 @@
 # eliza
-Annoying JavaScript page-bot. See online example [https://smcolash.github.io/eliza/files/](here).
+Annoying JavaScript page-bot. See online example [here](https://smcolash.github.io/eliza/files/).
