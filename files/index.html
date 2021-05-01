@@ -163,7 +163,16 @@ window.onload = function () {
             catch (e) {
             }
 
-            append (name, bot.transform (text));
+            let response = bot.transform (text);
+            append (name, response);
+
+            try {
+                var msg = new SpeechSynthesisUtterance (response);
+                window.speechSynthesis.speak (msg);
+            }
+            catch {
+            }
+
             if (bot.quit) {
                 input.setAttribute ("placeholder", "start conversation...");
                 space ();
