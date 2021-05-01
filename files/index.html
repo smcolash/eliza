@@ -74,7 +74,29 @@ body {
 	}
 }
 
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 16px;
+    background-color: rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -132,6 +154,10 @@ window.onload = function () {
     var inactivity = null;
 
     document.getElementById ("input").setAttribute ("placeholder", "start conversation...");
+
+    for (let loop = 0; loop < 20; loop++) {
+        append ('test', 'asdf');
+    }
 
     document.getElementById ("input").addEventListener ("change", function (e) {
         var input = this;
